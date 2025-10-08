@@ -113,8 +113,7 @@ export default function TaskForm({ task = null, onClose = () => {} }) {
                 onPress={handleDelete}
                 style={styles.deleteSmall}
               >
-                <Icon name="delete" size={20} color="#E53935" />
-                <Text style={styles.deleteSmallText}>XÓA</Text>
+                <Text style={styles.deleteSmallText}>Xóa task</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -185,40 +184,54 @@ export default function TaskForm({ task = null, onClose = () => {} }) {
         </View>
       </TouchableWithoutFeedback>
 
-      <Modal
-        visible={showDatePicker}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={handleDateCancel}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Chọn ngày hạn</Text>
-            <DateTimePicker
-              value={tempDate}
-              mode="date"
-              display="default"
-              onChange={(e, selected) => {
-                if (selected) setTempDate(selected);
-              }}
-            />
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={styles.modalCancelBtn}
-                onPress={handleDateCancel}
-              >
-                <Text style={styles.modalCancelText}>Hủy</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalConfirmBtn}
-                onPress={handleDateConfirm}
-              >
-                <Text style={styles.modalConfirmText}>Xác nhận</Text>
-              </TouchableOpacity>
+      {showDatePicker &&
+        (Platform.OS === "ios" ? (
+          <Modal
+            visible={showDatePicker}
+            transparent={true}
+            animationType="fade"
+            onRequestClose={handleDateCancel}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Chọn ngày hạn</Text>
+                <DateTimePicker
+                  value={tempDate}
+                  mode="date"
+                  display="spinner"
+                  onChange={(e, selected) => {
+                    if (selected) setTempDate(selected);
+                  }}
+                  style={{ width: "100%" }}
+                />
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    style={styles.modalCancelBtn}
+                    onPress={handleDateCancel}
+                  >
+                    <Text style={styles.modalCancelText}>Hủy</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.modalConfirmBtn}
+                    onPress={handleDateConfirm}
+                  >
+                    <Text style={styles.modalConfirmText}>Xác nhận</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
-      </Modal>
+          </Modal>
+        ) : (
+          <DateTimePicker
+            value={tempDate}
+            mode="date"
+            display="default"
+            onChange={(event, selected) => {
+              setShowDatePicker(false);
+              if (selected) setDate(selected);
+            }}
+          />
+        ))}
 
       <Modal
         visible={showPriorityPicker}

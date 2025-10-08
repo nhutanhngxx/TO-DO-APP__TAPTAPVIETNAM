@@ -69,11 +69,19 @@ export default function TaskItem({ task, onToggleDone }) {
 
         <View style={styles.rightContainer}>
           <TouchableOpacity onPress={toggleEdit} style={{ padding: 6 }}>
-            <Ionicons
-              name={showEdit ? "chevron-up" : "pencil-outline"}
-              size={18}
-              color="#000"
-            />
+            {!showEdit && (
+              <>
+                <Text
+                  style={{
+                    color: "#0d00ffff",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Chỉnh sửa
+                </Text>
+              </>
+            )}
           </TouchableOpacity>
           <Text style={styles.deadlineText}>
             {diffDays > 0 ? `Còn ${diffDays} ngày` : "Hết hạn"}
